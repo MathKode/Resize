@@ -61,19 +61,35 @@ def resize(x,y,way) :
         print(len(ls),img_y,data.shape[0])
         data_ls = ls
         img_y = img_y / 2
-    print(len(ls),img_y,data.shape[0])
     #Trouve la fraction irréductible :
     num_y, den_y = reduc(y,img_y)
+    num_y_new = int(den_y/(int(den_y/num_y) + 1))
+    print('new_y',num_y_new)
+    reste = num_y - num_y_new
+    print(reste)
+    diviseur = int(img_y/den_y) #donne le nombre de pour den_x * ? = img_x
+    print('div =',diviseur)
     ls = []
     d = 0
-    for i in data_ls :
-        if d > den_y - 1 :
+    tour = 0
+    px_add = 0
+    for line in data_ls :
+        if d == 0 :
+            #print('ok',tour,px_add)
+            ls.append(line)
+            px_add += 1
+            d = 1
+        elif tour < int(reste * diviseur*2) :
+            #print('ok2',tour,px_add)
+            px_add += 1
+            ls.append(line)
             d = 0
-        if d < num_y :
-            ls.append(i)
-        d += 1
+        else :
+            d = 0
+        tour += 1
+    print(int(reste * diviseur*2))
     data_ls = ls
-    print(len(data_ls))
+    print(len(data_ls),img_y,data.shape[0])
 
     # X resize (/2) :
 
@@ -98,17 +114,34 @@ def resize(x,y,way) :
         img_x = img_x / 2
     #Trouve la fr irréductible :
     num_x, den_x = reduc(x,img_x)
+    #Calcul : Ex : num = 75, den = 128 : 128/75 = 1,5 = 2 128/2 = 64  75-64 = 11 
+    num_x_new = int(den_x/(int(den_x/num_x) + 1))
+    print('new_x',num_x_new)
+    reste = num_x - num_x_new
+    print(reste)
+    diviseur = int(img_x/den_x) #donne le nombre de pour den_x * ? = img_x
     ls = []
     for line in data_ls :
         line_ls = []
         d = 0
+        tour = 0
+        px_add = 0
         for i in line :
-            if d > den_x - 1 :
-                d = 0
-            if d < num_x :
+            if d == 0 :
+                #print('ok',tour,px_add)
                 line_ls.append(i)
-            d += 1
+                px_add += 1
+                d = 1
+            elif tour < int(reste * diviseur*2) :
+                #print('ok2',tour,px_add)
+                px_add += 1
+                line_ls.append(i)
+                d = 0
+            else :
+                d = 0
+            tour += 1
         ls.append(line_ls)
+    print(int(reste * diviseur*2))
     data_ls = ls
     print(len(data_ls[0]),img_x,data.shape[1])
 
