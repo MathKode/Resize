@@ -87,6 +87,18 @@ def resize(x,y,way) :
         else :
             d = 0
         tour += 1
+    erreur = len(ls)-y #Calcul les lignes en trop
+    print('er',erreur)
+    #Supp ligne en trop
+    d = 0
+    for i in range(erreur) :
+        if d == 0 :
+            del ls[-1]
+            d = 1
+        else :
+            del ls[0]
+            d = 0
+    
     print(int(reste * diviseur*2))
     data_ls = ls
     print(len(data_ls),img_y,data.shape[0])
